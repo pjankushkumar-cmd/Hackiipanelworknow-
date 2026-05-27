@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Owner Super Control Panel</title>
+</head>
+<body>
+    <div class="container" style="max-width: 600px;">
+        <h1 class="hack-title">CONTROL COMMAND CENTER</h1>
+        <h2>Manage Server UID Status & Powers</h2>
+
+        <div style="background: rgba(0,0,0,0.4); padding: 20px; border-radius: 10px; border: 1px solid rgba(255, 0, 85, 0.2); text-align: left;">
+            <h3 style="margin-top:0; color:var(--neon-pink);">Grant / Revoke UID Permissions</h3>
+            
+            <label style="font-size:14px;">User Target UID String:</label>
+            <input type="text" id="targetUid" placeholder="Enter target user ID code...">
+            
+            <label style="font-size:14px;">Validity Expiry Timer:</label>
+            <select id="uidDuration">
+                <option value="1">1 Minute (Testing Loop)</option>
+                <option value="60">1 Hour Access</option>
+                <option value="1440">1 Full Day Access</option>
+                <option value="10080">1 Week VIP Premium</option>
+            </select>
+            
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <button onclick="modifyAccess('approve')" style="background: linear-gradient(90deg, #00cd22, #1bbb00);">🟢 Approve / Extend</button>
+                <button onclick="modifyAccess('reject')" style="background: linear-gradient(90deg, #ff0055, #c4003e);">🔴 Reject / Terminate</button>
+            </div>
+        </div>
+
+        <h3 style="text-align: left; margin-top: 30px; color: var(--neon-cyan);">Live Registered Database Monitor</h3>
+        <div style="overflow-x:auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>UID Key</th>
+                        <th>Status</th>
+                        <th>Remaining Time</th>
+                        <th>Command</th>
+                    </tr>
+                </thead>
+                <tbody id="dbRows">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        async function loadDatabase() {
+            try {
+                const res = await fetch('/api/admin/uids');
+                const data = await res.json();
+                const tbody = document.getElementById('dbRows');
+                tbody.innerHTML = '';
+
+                let hasData = false;
+                for(let uid in data) {
+                    hasData = true;
+                    const user = data[uid];
+                    const diff = Math.max(0, Math.round((user.expiry - Date.now()) / 1000 / 60));
+                    
+                    tbody.innerHTML += `
+                        <tr>
+                            <td style="font-family: monospace; font-size:14px;">${uid}</td>
+                            <td><span class="status-badge bg-success">${user.status.toUpperCase()}</span></td>
+                            <td>${diff} min(s) left</td>
+                            <td><button onclick="quickRemove('${uid}')" style="padding: 6px 12px; font-size: 12px; width: auto; background: var(--neon-pink)">Kill</button></td>
+                        </tr>
+                    `;
+                }
+                if(!hasData) {
+                    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#666;">No active UIDs found on server memory.</td></tr>`;
+                }
+            } catch(e) {}
+        }
+
+        async function modifyAccess(action) {
+            const uid = document.getElementById('targetUid').value.trim();
+            const duration = document.getElementById('uidDuration').value;
+            if(!uid) return alert('Error: Please specify target user UID key!');
+
+            await fetch('/api/admin/uid', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ uid, action, duration })
+            });
+            alert(`Execution completed: UID status switched to [${action}]`);
+            document.getElementById('targetUid').value = '';
+            loadDatabase();
+        }
+
+        async function quickRemove(uid) {
+            await fetch('/api/admin/uid', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ uid, action: 'delete' })
+            });
+            loadDatabase();
+        }
+
+        setInterval(loadDatabase, 3000);
+        window.onload = loadDatabase;
+    </script>
+</body>
+</html>
+
