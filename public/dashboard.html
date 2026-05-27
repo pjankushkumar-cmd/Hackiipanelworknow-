@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>WinGo 1M Live Tool</title>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="hack-title">@hackii_sureshote</h1>
+        <h2>BINGO WINGO SMART TOOL</h2>
+        
+        <p style="font-size: 13px; margin: 0;">Active User UID: <span id="myUidDisplay" style="color:var(--neon-green); font-weight:bold;">-</span></p>
+
+        <div class="prediction-box">
+            <h3 style="margin: 0 0 10px 0; font-size: 14px; color:#aaa; letter-spacing: 1px;">WAITING FOR API PERIOD</h3>
+            <h2 id="periodId" style="font-size: 26px; margin: 5px 0;">Period: Loading...</h2>
+            
+            <div style="font-size: 22px; margin: 15px 0; font-weight: bold;">
+                RECOMMENDED: <span id="predictResult" style="color:var(--gold); text-shadow: 0 0 10px rgba(255,204,0,0.5);">-</span>
+            </div>
+            <div style="font-size: 16px; font-weight: bold; color: #fff;">
+                COLOR PATTERN: <span id="colorResult">-</span>
+            </div>
+        </div>
+
+        <div style="font-size:11px; color:#666; margin-top:15px; line-height: 1.4;">
+            Advanced 53 database loops active. Data matches identical values for all parallel logged devices worldwide.
+        </div>
+    </div>
+
+    <script>
+        const uid = localStorage.getItem('user_uid');
+        if(!uid) { window.location.href = 'index.html'; }
+        document.getElementById('myUidDisplay').innerText = uid;
+
+        // Strict 5-seconds security loop handler
+        async function runSecurityLoop() {
+            try {
+                const res = await fetch('/api/user/verify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ uid })
+                });
+                const data = await res.json();
+                if(data.status !== 'approved') {
+                    alert('Session Terminated/Expired by Super Admin!');
+                    localStorage.removeItem('user_uid');
+                    window.location.href = 'index.html';
+                }
+            } catch (e) {
+                // If temporary drop, ignore to maintain stable UI
+            }
+        }
+        setInterval(runSecurityLoop, 5000);
+
+        // Instant Realtime Sync Core Engine
+        const socket = io();
+        socket.on('predictionUpdate', (data) => {
+            document.getElementById('periodId').innerText = "Period: " + data.period;
+            document.getElementById('predictResult').innerText = data.result;
+            document.getElementById('colorResult').innerText = data.color;
+        });
+
+        socket.on('uidRevoked', (data) => {
+            if(data.uid === uid) {
+                localStorage.removeItem('user_uid');
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>
+
