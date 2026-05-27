@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>VIP UID Verification</title>
+</head>
+<body>
+    <div class="container">
+        <h1 class="hack-title">@hackii_sureshote</h1>
+        <h2>VIP PREDICTION SYSTEM</h2>
+        
+        <p style="font-size: 14px; color: #aaa;">Enter your secret UID key to unlock the tool:</p>
+        <input type="text" id="uidInput" placeholder="Paste UID Key Here...">
+        <button onclick="verifyUID()">🚀 ACTIVATE PREDICTOR</button>
+        
+        <div id="msgBox" style="margin-top: 15px; font-size: 14px; font-weight: bold; min-height: 20px;"></div>
+        
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 25px 0;">
+        <p style="font-size: 13px; color: #ccc;">If you don't have access code or need extension, text admin directly:</p>
+        <button class="btn-tg" onclick="window.location.href='https://t.me/hackii_sureshote'">💬 Message Telegram Admin</button>
+    </div>
+
+    <script>
+        async function verifyUID() {
+            const uid = document.getElementById('uidInput').value.trim();
+            const msgBox = document.getElementById('msgBox');
+            if(!uid) {
+                msgBox.innerText = "Error: Please write UID code first!";
+                msgBox.style.color = "#ff0055";
+                return;
+            }
+            
+            try {
+                const res = await fetch('/api/user/verify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ uid })
+                });
+                const data = await res.json();
+                
+                if(data.status === 'approved') {
+                    localStorage.setItem('user_uid', uid);
+                    window.location.href = 'dashboard.html';
+                } else {
+                    msgBox.innerText = data.message;
+                    msgBox.style.color = "#ff0055";
+                }
+            } catch (err) {
+                msgBox.innerText = "Server Connection Error!";
+                msgBox.style.color = "#ff0055";
+            }
+        }
+    </script>
+</body>
+</html>
+
