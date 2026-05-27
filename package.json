@@ -1,0 +1,17 @@
+{
+  "name": "wingo-prediction-tool",
+  "version": "1.0.0",
+  "description": "Premium WinGo 1M Realtime Prediction Tool with Admin Controls",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.8",
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5"
+  },
+  "author": "@hackii_sureshote",
+  "license": "ISC"
+}
+
