@@ -52,7 +52,7 @@
         </p>
         <p style="font-size: 13px; margin: 5px 0 0 0;">Active User UID: <span id="myUidDisplay" style="color:var(--neon-cyan); font-weight:bold;">-</span></p>
 
-        <div class="timer-box" id="timerDisplay">⏳ Syncing server clock... 00:00</div>
+        <div class="timer-box" id="timerDisplay">⏳ Next Period Update In: 00:00s</div>
 
         <div class="prediction-box" style="border-color: var(--neon-cyan); box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);">
             <h3 style="margin: 0 0 10px 0; font-size: 13px; color:#ff0055; letter-spacing: 1.5px; font-weight: bold;">⚡ UPCOMING PREDICTION ⚡</h3>
@@ -76,9 +76,9 @@
     <script>
         const uid = localStorage.getItem('user_uid');
         if(!uid) { window.location.href = 'index.html'; }
-        document.getElementById('myUidDisplay').innerText = uid;
+        document.getElementById('myUidDisplay').innerText = uid || "-";
 
-        // Security check loop (Kickout block)
+        // Security check loop
         async function runSecurityLoop() {
             try {
                 const res = await fetch('/api/user/verify', {
@@ -96,7 +96,7 @@
         }
         setInterval(runSecurityLoop, 5000);
 
-        // Realtime 1-Minute local fallback stopwatch timer script 
+        // Timer function completely fixed to prevent layout breaking
         function startLocalTimer() {
             setInterval(() => {
                 const now = new Date();
@@ -109,13 +109,21 @@
         }
         startLocalTimer();
 
-        // Instant Realtime Sync Engine via Sockets
+        // Fixed Realtime Sync Engine via Sockets
         const socket = io();
         socket.on('predictionUpdate', (data) => {
-            if(data && data.period !== "Fetching...") {
+            if(data && data.period && data.period !== "Fetching...") {
                 document.getElementById('periodId').innerHTML = `Period: <span style="color:var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan);">${data.period}</span>`;
-                document.getElementById('predictResult').innerHTML = data.result === "BIG" ? "🔥 BIG [बड़ा]" : "⚡ SMALL [छोटा]";
-                document.getElementById('colorResult').innerHTML = data.color;
+                
+                if(data.result === "BIG") {
+                    document.getElementById('predictResult').innerHTML = "🔥 BIG [बड़ा]";
+                } else if(data.result === "SMALL") {
+                    document.getElementById('predictResult').innerHTML = "⚡ SMALL [छोटा]";
+                } else {
+                    document.getElementById('predictResult').innerHTML = data.result || "-";
+                }
+                
+                document.getElementById('colorResult').innerHTML = data.color || "-";
             }
         });
 
