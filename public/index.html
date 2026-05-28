@@ -3,23 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>VIP UID Verification</title>
+    <title>VIP UID Verification - HACKER SYSTEM</title>
+    <style>
+        /* हैकर स्टाइल डार्क थीम */
+        body {
+            background-color: #05050a;
+            color: #00ff66;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* बैकग्राउंड में हल्का मैट्रिक्स ग्रिड इफ़ेक्ट */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 255, 102, 0.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0, 255, 102, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        /* मेन कंटेनर */
+        .container {
+            background: rgba(10, 10, 18, 0.95);
+            border: 2px solid #00ff66;
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.4);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            z-index: 1;
+            position: relative;
+        }
+
+        /* रेड नियॉन ग्लो टाइटल */
+        .hack-title {
+            color: #ff0055;
+            font-size: 28px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 0, 85, 0.6), 0 0 20px rgba(255, 0, 85, 0.4);
+        }
+
+        /* सब-हेडिंग */
+        h2 {
+            color: #00d2ff;
+            font-size: 16px;
+            letter-spacing: 3px;
+            margin-bottom: 25px;
+            text-shadow: 0 0 8px rgba(0, 210, 255, 0.5);
+        }
+
+        /* इनपुट बॉक्स */
+        input[type="text"] {
+            width: 90%;
+            padding: 12px;
+            background: #111;
+            border: 1px solid #00ff66;
+            color: #00ff66;
+            font-family: inherit;
+            font-size: 14px;
+            border-radius: 6px;
+            outline: none;
+            text-align: center;
+            box-shadow: inset 0 0 5px rgba(0, 255, 102, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.5), inset 0 0 5px rgba(0, 255, 102, 0.4);
+        }
+
+        /* बटन बेसिक स्टाइल */
+        button {
+            width: 97%;
+            padding: 14px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 6px;
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* प्रेडिक्टर एक्टिवेट बटन (पर्पल/पिंक नियॉन) */
+        .btn-activate {
+            background: linear-gradient(45deg, #ff0055, #a200ff);
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .btn-activate:hover {
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.8);
+            transform: scale(1.02);
+        }
+
+        /* रजिस्ट्रेशन बटन (नया जोड़ा गया - साइबर येलो/ओरेंज स्टाइल) */
+        .btn-register {
+            background: linear-gradient(45deg, #ff9900, #ff5500);
+            color: white;
+            margin-top: 10px;
+        }
+
+        .btn-register:hover {
+            box-shadow: 0 0 15px rgba(255, 153, 0, 0.8);
+            transform: scale(1.02);
+        }
+
+        /* टेलीग्राम बटन */
+        .btn-tg {
+            background: #0088cc;
+            color: white;
+        }
+
+        .btn-tg:hover {
+            box-shadow: 0 0 15px rgba(0, 136, 204, 0.8);
+            transform: scale(1.02);
+        }
+
+        /* मैसेज बॉक्स */
+        #msgBox {
+            margin-top: 15px;
+            font-size: 14px;
+            font-weight: bold;
+            min-height: 20px;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px dashed rgba(0, 255, 102, 0.3);
+            margin: 20px 0;
+        }
+
+        p {
+            margin: 5px 0;
+        }
+    </style>
 </head>
 <body>
+
     <div class="container">
         <h1 class="hack-title">@hackii_sureshote</h1>
         <h2>VIP PREDICTION SYSTEM</h2>
         
-        <p style="font-size: 14px; color: #aaa;">Enter your secret UID key to unlock the tool:</p>
+        <p style="font-size: 13px; color: #ff9900; font-weight: bold; margin-bottom: 10px;">⚠️ NOT REGISTERED YET? REGISTER HERE FIRST:</p>
+        <button class="btn-register" onclick="window.location.href='https://www.jaiclub18.com/#/register?invitationCode=377572996558'">🔥 REGISTER NEW ACCOUNT</button>
+        
+        <hr>
+
+        <p style="font-size: 13px; color: #00d2ff;">ENTER SECRET UID TO BYPASS SYSTEM:</p>
         <input type="text" id="uidInput" placeholder="Paste UID Key Here...">
-        <button onclick="verifyUID()">🚀 ACTIVATE PREDICTOR</button>
+        <button class="btn-activate" onclick="verifyUID()">🚀 ACTIVATE PREDICTOR</button>
         
-        <div id="msgBox" style="margin-top: 15px; font-size: 14px; font-weight: bold; min-height: 20px;"></div>
+        <div id="msgBox"></div>
         
-        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 25px 0;">
-        <p style="font-size: 13px; color: #ccc;">If you don't have access code or need extension, text admin directly:</p>
-        <button class="btn-tg" onclick="window.location.href='https://t.me/hackii_sureshote'">💬 Message Telegram Admin</button>
+        <hr>
+        
+        <p style="font-size: 12px; color: #aaa;">IF YOU NEED KEY OR EXTENSION, CONTACT ADMIN:</p>
+        <button class="btn-tg" onclick="window.location.href='https://t.me/hackii_sureshote'">💬 MESSAGE TELEGRAM ADMIN</button>
     </div>
 
     <script>
@@ -27,7 +184,7 @@
             const uid = document.getElementById('uidInput').value.trim();
             const msgBox = document.getElementById('msgBox');
             if(!uid) {
-                msgBox.innerText = "Error: Please write UID code first!";
+                msgBox.innerText = "❌ ERROR: ACCESS DENIED! WRITE UID CODE!";
                 msgBox.style.color = "#ff0055";
                 return;
             }
@@ -42,17 +199,20 @@
                 
                 if(data.status === 'approved') {
                     localStorage.setItem('user_uid', uid);
-                    window.location.href = 'dashboard.html';
+                    msgBox.innerText = "✅ ACCESS GRANTED! REDIRECTING...";
+                    msgBox.style.color = "#00ff66";
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1000);
                 } else {
-                    msgBox.innerText = data.message;
+                    msgBox.innerText = "❌ " + data.message;
                     msgBox.style.color = "#ff0055";
                 }
             } catch (err) {
-                msgBox.innerText = "Server Connection Error!";
+                msgBox.innerText = "💥 CONNECTION ERROR: SERVER BYPASS FAILED!";
                 msgBox.style.color = "#ff0055";
             }
         }
     </script>
 </body>
 </html>
-
