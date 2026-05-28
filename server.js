@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
@@ -19,7 +18,7 @@ app.get('/', (req, res) => {
 
 // Server Storage Memory
 let uids = {}; 
-let globalPrediction = { period: "Fetching...", result: "WAITING", color: "Calculating", timestamp: "" };
+let globalPrediction = { period: "Loading...", result: "-", color: "-", timestamp: "" };
 
 // Sahi structured parameters API for WinG0 1M
 const GAME_API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageNo=1&pageSize=20&gameId=1";
@@ -28,13 +27,13 @@ async function updatePrediction() {
     try {
         const response = await axios.get(GAME_API, {
             headers: {
-                'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Mobile/15E148 Safari/604.1',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
                 'Accept': 'application/json, text/plain, */*',
-                'Accept-Language': 'en-IN,en-GB;q=0.9,en;q=0.8,hi;q=0.7',
+                'Accept-Language': 'en-US,en;q=0.9',
                 'Referer': 'https://draw.ar-lottery01.com/',
                 'Origin': 'https://draw.ar-lottery01.com'
             },
-            timeout: 5000
+            timeout: 6000
         });
 
         if(response.data && response.data.data && response.data.data.list) {
@@ -59,7 +58,7 @@ async function updatePrediction() {
             let colorSuggestion = (predictedResult === "BIG") ? "🔴 RED [लाल] + 🔮 VIOLET" : "🟢 GREEN [हरा]";
 
             globalPrediction = {
-                period: nextPeriod,
+                period: nextPeriod.toString(),
                 result: predictedResult,
                 color: colorSuggestion,
                 timestamp: new Date().toLocaleTimeString()
@@ -75,6 +74,8 @@ async function updatePrediction() {
 
 // Data fetch frequency matching system (Auto check every 4 seconds)
 setInterval(updatePrediction, 4000);
+// Run once immediately on startup
+updatePrediction();
 
 // Admin Routing Controls
 app.post('/api/admin/uid', (req, res) => {
